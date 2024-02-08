@@ -55,10 +55,11 @@ public class CommonMember {
 	
 	public void setPasswd(String passwd) {
 	// @@@@@@ 비밀번호 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        if(passwd.isBlank()) { // 공백이라면
+        if(passwd == null || passwd.isBlank()) { // 공백이라면
        		System.out.println
               (">> 공백이 아닌 비밀번호를 입력하세요\n");
        }
+       boolean isPasswd = false;
        int length = passwd.length();
        // 글자수를 8~10 으로 설정
        if(length >= 8 && length <= 10) {
@@ -87,16 +88,18 @@ public class CommonMember {
                 else							// 특수문자
                 	flag_special = true;
            }	// end of for--------
-           if(flag_upper && flag_lower && flag_number && flag_special)
+           if(flag_upper && flag_lower && flag_number && flag_special) {
            	// 하나라도 거짓이라면 false
-              	this.passwd = passwd;
-           else {
-        	   System.out.println("[경고] 비밀번호는 대,소문자,숫자,특수문자가 혼합되어야 합니다.\n");
-           }	// end of if~else------------------
-       } else {
-    	   System.out.println("[경고] 비밀번호는 8~10 글자로 구성되야 합니다.\n");
+              	isPasswd = true;
+           }
+           
+           if(isPasswd) {
+        	   this.passwd = passwd;
+           } 
+       } else {	// 글자가 8~10 글자가 아닌 경우
+    	   System.out.println("[경고] 비밀번호는 8~10 글자로 대,소문자,숫자,특수문자가 혼합되어야 합니다.\n");
        }	// end of if~else----------
-	}	// end of public void setPasswd(String passwd)--------------
+   	}	// end of public void setPasswd(String passwd)--------------
 		
 	public String getPasswd() {
 		return passwd;

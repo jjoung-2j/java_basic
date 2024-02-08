@@ -10,14 +10,14 @@ public class Main_gujikja_company {
 		
 		Gujikja gu1 = new Gujikja();
 		gu1.setId("eomjh");
-		//gu1.setPasswd("qwer1234$");
+		gu1.setPasswd("qwer1234$");
 		gu1.setName("엄정화");
 		gu1.setJubun("8610201");
 		gu_arr[Gujikja.count++] = gu1;
 		
 		Gujikja gu2 = new Gujikja();
 		gu2.setId("leess");
-		//gu2.setPasswd("abCd12345$");
+		gu2.setPasswd("abCd12345$");
 		gu2.setName("이순신");
 		gu2.setJubun("8601201");
 		gu_arr[Gujikja.count++] = gu2;
