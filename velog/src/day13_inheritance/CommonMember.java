@@ -103,18 +103,19 @@ public class CommonMember {
 	}	// end of public String getPasswd()---------
 	
 	public void setName(String name) {
-		for(int i=0; i<name.length(); i++) {
-			if('가' > name.charAt(i) && name.charAt(i) <'힣') {
-				System.out.println("[경고] 성명은 한글로만 이루어져야 합니다.\n");
-				break;	// 계속 검사할 이유가 없다.
-			}
-		}	// end of for-------
 		if(2 <= name.length() && name.length() <= 6) {
-			// 유효성 통과한 경우
-			this.name = name;	// 가~힣 사이 글자들
-			
+			for(int i=0; i<name.length(); i++) {
+				if('가' <= name.charAt(i) && name.charAt(i) >= '힣') {
+					// 유효성 통과한 경우
+					this.name = name;	// 가~힣 사이 글자들
+				} else {
+					System.out.println("[경고] 성명은 한글로만 이루어져야 합니다.\n");
+					break;	// 계속 검사할 이유가 없다.
+				}	// end of if~else----
+			}	// end of for-------
+
 		} else {	// 2~6 글자가 아닌 경우
-			System.out.println("[경고] 성명은 공백이 없는 한글로만 이루어져야 하며, 2~6글자로 이루어져야 합니다.\n");
+			System.out.println("[경고] 성명은 2~6글자로 공백이 없는 한글로만 이루어져야 합니다.\n");
 		}	// end of if~else----------
 	}	// end of public void setName (String name)-----------
 	
