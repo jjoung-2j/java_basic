@@ -103,12 +103,12 @@ public class CommonMember {
 	}	// end of public String getPasswd()---------
 	
 	public void setName(String name) {
-		if(2 <= name.length() && name.length() <= 6) {
+		if(2 <= name.length() && name.length() <= 6) {		// 2~6 글자인 경우
 			for(int i=0; i<name.length(); i++) {
 				if('가' <= name.charAt(i) && name.charAt(i) >= '힣') {
 					// 유효성 통과한 경우
 					this.name = name;	// 가~힣 사이 글자들
-				} else {
+				} else if('가' > name.charAt(i) && name.charAt(i) < '힣'){
 					System.out.println("[경고] 성명은 한글로만 이루어져야 합니다.\n");
 					break;	// 계속 검사할 이유가 없다.
 				}	// end of if~else----
