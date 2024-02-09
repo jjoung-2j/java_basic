@@ -1,4 +1,4 @@
-package day13_inheritance;
+package day13_14.inheritance;
 
 public class Ctrl_common {
 	// == 시작화면(메인 메뉴)를 보여주는 메소드 생성하기 == //

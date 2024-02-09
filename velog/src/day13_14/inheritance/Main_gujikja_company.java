@@ -1,4 +1,4 @@
-package day13_inheritance;
+package day13_14.inheritance;
 
 import java.util.Scanner;
 
@@ -10,9 +10,9 @@ public class Main_gujikja_company {
 		
 		Gujikja gu1 = new Gujikja();
 		gu1.setId("eomjh");
-		gu1.setPasswd("qwer1234$");
+		gu1.setPasswd("Qwer1234$");
 		gu1.setName("엄정화");
-		gu1.setJubun("8610201");
+		gu1.setJubun("8610202");
 		gu_arr[Gujikja.count++] = gu1;
 		
 		Gujikja gu2 = new Gujikja();
@@ -41,16 +41,34 @@ public class Main_gujikja_company {
 		
 		Recruit rc1 = new Recruit();
 		rc1.setCp(cp1);
-		rc1.setWork_type("연구직");
+		rc1.setSubject("성실한 사무직원을 채용합니다.");
+		rc1.setWork_type("사무직");
 		rc1.setCnt(5);
-		rc1.setFinish_day("2024-02-08");
+		rc1.setYearpay(4000);
+		rc1.setFinish_day("2024-12-08");
 		rc_arr[Recruit.count++] = rc1;
+		
+//== RecruitApply =========================================================
+		
+		RecruitApply[] rcApply_arr = new RecruitApply[20];
+		
+		RecruitApply rcapply1 = new RecruitApply();
+		rcapply1.setRc(rc1);	// 1번 공고에 지원
+		rcapply1.setGu(gu1);	// 구직자 gu1 이 지원
+		rcapply1.setApply_motive("엄정화는 사무에 최선을 다합니다.");
+		rcApply_arr[RecruitApply.count++] = rcapply1;
+		
+		RecruitApply rcapply2 = new RecruitApply();
+		rcapply2.setRc(rc1);	// 1번 공고에 지원
+		rcapply2.setGu(gu2);	// 구직자 gu2 이 지원
+		rcapply2.setApply_motive("이순신은 최고의 사무직 인재입니다.");
+		rcApply_arr[RecruitApply.count++] = rcapply1;
 		
 // ===========================================================================================
 		
 		Scanner sc = new Scanner(System.in);
-		Ctrl_gujikja ctrl_gu = new Ctrl_gujikja();		// Ctrl_gujikja 클래스에서 불러오는것 : ctrl_gu
 		Ctrl_common ctrl_common = new Ctrl_common();	// Ctrl_common 클래스에서 불러오는것 : ctrl_common
+		Ctrl_gujikja ctrl_gu = new Ctrl_gujikja();		// Ctrl_gujikja 클래스에서 불러오는것 : ctrl_gu
 		Ctrl_company ctrl_cp = new Ctrl_company();		// Ctrl_company 클래스에서 불러오는 것 : ctrl_cp
 		
 		String str_menuno = "";
@@ -68,7 +86,7 @@ public class Main_gujikja_company {
 				Gujikja login_gu = ctrl_gu.login(sc, gu_arr);
 				if(login_gu != null) {
 					System.out.println(">> 구직자 " + login_gu.getName() + "님 로그인 성공 ^^ <<\n");
-					ctrl_gu.gu_menu(sc, login_gu, cp_arr);	// 구직자 전용메뉴
+					ctrl_gu.gu_menu(sc, login_gu, cp_arr, rc_arr, rcApply_arr);	// 구직자 전용메뉴
 				} else
 					System.out.println(">> 구작자로 로그인 실패 <<\n");
 				break;
@@ -76,7 +94,7 @@ public class Main_gujikja_company {
 				Company login_cp = ctrl_cp.login(sc, cp_arr);
 				if(login_cp != null) {
 					System.out.println(">> 구인회사 " + login_cp.getName() + "기업 로그인 성공 ^^ <<\n");
-					ctrl_cp.cp_menu(sc,login_cp,gu_arr,rc_arr);	// 구인회사 전용메뉴
+					ctrl_cp.cp_menu(sc,login_cp,gu_arr,rc_arr, rcApply_arr);	// 구인회사 전용메뉴
 				} else
 					System.out.println(">> 구인회사로 로그인 실패 <<\n");
 				break;

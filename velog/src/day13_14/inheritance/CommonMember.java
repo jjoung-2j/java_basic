@@ -1,4 +1,4 @@
-package day13_inheritance;
+package day13_14.inheritance;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 public class CommonMember {
 
 	private String id;		// 구직자와 회사 모두 사용할 것이기에 id 로 정의
-	private String passwd;
-	private String name;
-	private String register_day;
+	private String passwd;			// 비밀번호
+	private String name;			// 성명 또는 회사명
+	private String register_day;	// 가입일자
 	
 	// 기본생성자
 	public CommonMember() {
@@ -36,7 +36,7 @@ public class CommonMember {
 			Pattern p = Pattern.compile
 	        				("^[A-Za-z][A-Za-z0-9]{2,9}$");
 	       // 패턴이 일치하는지 확인 (참, 거짓)
-	       Matcher m = p.matcher(id);
+			Matcher m = p.matcher(id);
 	       // 판별하기
 	       if(m.matches()) {	// 패턴이 일치할 경우
 	       		this.id = id;
@@ -110,9 +110,9 @@ public class CommonMember {
 		if(2 <= name.length() && name.length() <= 6) {		// 2~6 글자인 경우
 			for(int i=0; i<name.length(); i++) {
 				if(!('가' <= name.charAt(i) && name.charAt(i) <= '힣')) {
-					System.out.println("[경고] 성명은 한글로만 이루어져야 합니다.\n");
+					System.out.println("[경고] 공백이 없는 한글로만 이루어져야 합니다.\n");
 					isName = false;
-					break;
+					break;		// 더이상 검사할 필요가 없다.
 				}
 			}	// end of for-------
 			if(isName) {
@@ -120,7 +120,7 @@ public class CommonMember {
 				this.name = name;	// 가~힣 사이 글자들
 			}	
 		} else {	// 2~6 글자가 아닌 경우
-			System.out.println("[경고] 성명은 2~6글자로 공백이 없는 한글로만 이루어져야 합니다.\n");
+			System.out.println("[경고] 2~6글자로 공백이 없는 한글로만 이루어져야 합니다.\n");
 			isName = false;
 		}	// end of if~else----------
 	}	// end of public void setName (String name)-----------
