@@ -3,7 +3,7 @@ package my.day13_14.a.inheritance;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import my.util.MyUtil;
+import Util.MyUtil;
 
 /*
 		   ==== *** 객체지향 프로그래밍(Object Oriented Programming)이란? *** ==== 
