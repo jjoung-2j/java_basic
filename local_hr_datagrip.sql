@@ -309,6 +309,40 @@ begin
 end func_age_2;
 -- Function FUNC_AGE_2이(가) 컴파일되었습니다.
 
+-- 나이함수3
+create or replace function func_age_3
+    (p_jubun IN varchar2)
+    return number
+IS
+    error_jubun  exception; -- error_jubun은 개발자가 정의하는 exception(예외절)임을 선언한다는 뜻이다.
+    v_gender_num varchar2(1) := substr(p_jubun,7,1); -- := 초기값을 넣어주는 것
+                                                     -- v_gender_num 에는 입력받은 p_jubun 에서 7번째 부터 1개 글자만 넣어준다.
+                                                     -- 즉, v_gender_num 에는 '1' 또는 '2' 또는 '3' 또는 '4' 가 들어올 것이다.
+    v_year       number(4);
+    v_age        number(3);
+BEGIN
+    if length(p_jubun) != 13 then raise error_jubun;
+    end if;
+
+    if    v_gender_num in ('1','2') then v_year := 1900;
+    elsif v_gender_num in ('3','4') then v_year := 2000;
+    else raise error_jubun;
+    end if;
+
+    if to_date(to_char(sysdate,'yyyy')||substr(p_jubun,3,4),'yyyymmdd') - to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd') > 0
+         then v_age := extract(year from sysdate) - (v_year + to_number(substr(p_jubun,1,2))) - 1;
+    else v_age := extract(year from sysdate) - (v_year + to_number(substr(p_jubun,1,2)));
+    end if;
+
+    return v_age;
+
+    EXCEPTION
+    WHEN error_jubun
+    then raise_application_error(-20001, '잘못된 주민등록 번호입니다.'); -- raise_application_error() 는 dbms가 아닌 스크립트 출력창에 오류를 띄워준다.
+                          --     -20001 은 오류번호로써, 사용자가 정의해주는 EXCEPTION 에 대해서는 오류번호를 -20001 부터 -20999 까지만 가능하다. 그 이외의 오류번호는 사용할 수 없다.
+END func_age_3;
+-- Function FUNC_AGE_3이(가) 컴파일되었습니다.
+
 -- 정년퇴직일 함수
 create or replace function func_retirement_day
     (p_jubun  IN  varchar2)
@@ -324,3 +358,52 @@ begin
     return v_retirement_day;
 end func_retirement_day;
 -- Function FUNC_RETIREMENT_DAY이(가) 컴파일되었습니다.
+
+
+create or replace procedure pcd_tbl_member_test1_insert
+    (p_userid IN tbl_member_test1.userid%type
+    ,p_passwd IN tbl_member_test1.passwd%type
+    ,p_name IN tbl_member_test1.name%type
+    )
+    is
+        error_dayTime   exception;      -- error 변수 선언
+        v_passwd_length number(2);
+        error_insert    exception;      -- error 변수 선언
+        v_ch            varchar2(1);    -- passwd 글자 한개
+        v_flag_alphabet number(1) := 0; -- 영문자 확인 용도
+        v_flag_number   number(1) := 0; -- 숫자 확인 용도
+        v_flag_special  number(1) := 0; -- 특수문자 확인 용도
+    begin
+        -- 입력(insert)이 불가한 요일명과 시간대를 알아봅니다. --
+        if(to_char(sysdate,'d') in ('1','7') or to_number(to_char(sysdate,'hh24')) < 14 or to_number(to_char(sysdate,'hh24')) > 16)
+            then raise error_dayTime;
+        else    -- 입력(insert)이 가능한 요일명과 시간대 이라면 암호를 검사하겠다.
+
+            v_passwd_length := length(p_passwd);
+            if(v_passwd_length < 5 or v_passwd_length > 20) then raise error_insert;    -- 사용자가 정의하는 예외절(Exception)을 구동시켜라.
+            else
+                For i in 1..v_passwd_length LOOP
+                    v_ch := substr(p_passwd,i,1);
+
+                    if(v_ch between 'A' and 'Z') or (v_ch between 'a' and 'z') then     -- 영문자 이라면
+                        v_flag_alphabet := 1;
+                    elsif(v_ch between '0' and '9') then    -- 숫자 이라면
+                        v_flag_number := 1;
+                    else    -- 특수문자 이라면
+                        v_flag_special := 1;
+                    end if;
+                END LOOP;   -- end of for loop-------------------------------------------------------------
+
+                if(v_flag_alphabet * v_flag_number * v_flag_special = 1) then
+                    insert into tbl_member_test1(userid,passwd,name) values(p_userid,p_passwd,p_name);
+                else raise error_insert;     -- 사용자가 정의하는 예외절(Exception)을 구동시켜라.
+                end if;
+            end if;
+        end if;
+        Exception   -- 정의내리기
+            WHEN error_dayTime THEN raise_application_error(-20003,'>> 영업시간(월~금 14:00 ~ 16:59:59 까지)이 아니므로 입력불가함 <<');
+            WHEN error_insert THEN raise_application_error(-20002,'>> 암호는 최소 5글자 이상이면서 영문자 및 숫자 및 특수기호가 혼합되어져야 합니다. <<');
+    end pcd_tbl_member_test1_insert;
+    -- Procedure PCD_TBL_MEMBER_TEST1_INSERT이(가) 컴파일되었습니다.
+
+    commit;
