@@ -1,0 +1,10 @@
+24.01.25(목)
+
+[Class]객체(Object)를 생성하기 위한 틀(Template)
+- 객체 지향 프로그래밍(OOP,Object-Oriented Programming)의 기본 구성 요소 중 하나
+- 구성 요소(member)
+1) 필드(변수)
+2) 생성자
+3) 메소드 = 함수 = method = function
+
+클래스 선언(Declaration): 클래스를 정의하는 부분, 클래스 이름과 중괄호 내에 속성과 메서드를 정의한다.
